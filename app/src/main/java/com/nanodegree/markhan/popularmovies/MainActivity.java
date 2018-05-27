@@ -1,12 +1,10 @@
 package com.nanodegree.markhan.popularmovies;
 
+import android.graphics.Movie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import com.nanodegree.markhan.popularmovies.Model.Movie;
 
 import java.util.ArrayList;
 
@@ -16,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.movie_thumbail_recyclerview) RecyclerView movieRecyclerView;
 
-    ArrayList<Movie> movies;
+//    ArrayList<> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
