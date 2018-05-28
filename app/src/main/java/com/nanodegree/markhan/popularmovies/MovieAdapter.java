@@ -18,6 +18,8 @@ public class MovieAdapter extends
         RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private List<Movie> movies;
+    private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342/";
+
 
     public MovieAdapter(List<Movie> movies) {
         this.movies = movies;
@@ -40,6 +42,7 @@ public class MovieAdapter extends
     // Populates data into the item through holder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         // Get the data model based on position
         Movie movie = movies.get(position);
 

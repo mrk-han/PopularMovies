@@ -6,15 +6,22 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.nanodegree.markhan.popularmovies.api.MovieDbService;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import retrofit2.Retrofit;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String BASE_URL = "http://api.themoviedb.org/";
+
     @BindView(R.id.movie_thumbail_recyclerview) RecyclerView movieRecyclerView;
 
-//    ArrayList<> movies;
+    ArrayList<com.nanodegree.markhan.popularmovies.models.Movie> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,4 +39,15 @@ public class MainActivity extends AppCompatActivity {
         movieRecyclerView.setHasFixedSize(true); // may improve performance depending on size of recyclerview
         movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
     }
+
+    // Retrofit setup with Moshi Converter
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build();
+
+    MovieDbService service = retrofit.create(MovieDbService.class);
+
+
+
 }
