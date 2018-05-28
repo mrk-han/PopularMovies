@@ -2,6 +2,7 @@ package com.nanodegree.markhan.popularmovies.models;
 
 public class Movie {
 
+    private String id;
     private String title;
     private String overview;
     private String poster_path;
@@ -9,6 +10,15 @@ public class Movie {
     private String backdrop_path;
     private String release_date;
     private double vote_average;
+    private Integer vote_count;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -66,6 +76,11 @@ public class Movie {
         this.vote_average = vote_average;
     }
 
+    public Integer getVote_count() {
+        return vote_count;
+    }
 
-
+    public void setVote_count(Integer vote_count) {
+        this.vote_count = vote_count;
+    }
 }
