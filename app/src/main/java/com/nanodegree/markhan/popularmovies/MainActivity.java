@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.nanodegree.markhan.popularmovies.api.MovieDbService;
 
@@ -48,6 +51,26 @@ public class MainActivity extends AppCompatActivity {
             .build();
 
     MovieDbService service = retrofit.create(MovieDbService.class);
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int menuItemSelected = item.getItemId();
+
+        if(menuItemSelected == R.id.item_popular_movies){
+            // Get the popular movies using rxjava/retrofit/moshi
+        } else if(menuItemSelected == R.id.item_top_rated_movies){
+            // Get the top rated movies using rxjava/retrofit/moshi
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 
