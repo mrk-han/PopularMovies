@@ -1,13 +1,15 @@
 package com.nanodegree.markhan.popularmovies;
 
 import android.content.Context;
-import android.graphics.Movie;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import com.nanodegree.markhan.popularmovies.models.Movie;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,12 +19,13 @@ import butterknife.ButterKnife;
 public class MovieAdapter extends
         RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private List<Movie> movies;
-    private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342/";
+    private List<Movie> movieList;
+    private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342//to0spRl1CMDvyUbOnbb4fTk3VAd.jpg";
+    @BindView(R.id.movie_poster_imageview) ImageView moviePosterIV;
 
 
-    public MovieAdapter(List<Movie> movies) {
-        this.movies = movies;
+    public MovieAdapter(List<Movie> movieList) {
+        this.movieList = movieList;
     }
 
     // Inflate the custom layout from XML and return the holder
@@ -44,23 +47,22 @@ public class MovieAdapter extends
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // Get the data model based on position
-        Movie movie = movies.get(position);
-
-        // Set item views based on your views and data model
-        // TODO: Use Picasso to fetch Image
-
-
-
+//        Movie movie = movieList.get(position);
+        String posterUrl = MOVIE_POSTER_PATH;
+        Picasso.get()
+                .load(posterUrl)
+                .placeholder(R.color.colorAccent)
+                .into(moviePosterIV);
     }
 
-    // Returns the total count of movies in the list
+    // Returns the total count of movieList in the list
     @Override
     public int getItemCount() {
-        return movies.size();
+        return movieList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.movie_poster_imageview) ImageView moviePosterIV;
+
 
         public ViewHolder(View view) {
             super(view);
