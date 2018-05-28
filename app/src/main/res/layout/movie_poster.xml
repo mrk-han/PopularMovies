@@ -7,6 +7,9 @@
         android:id="@+id/movie_poster_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:padding="4dp"
         />
 
 </LinearLayout>
