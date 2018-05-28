@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String BASE_URL = "http://api.themoviedb.org/";
+    private final static String API_KEY = BuildConfig.API_KEY;
 
     @BindView(R.id.movie_thumbail_recyclerview) RecyclerView movieRecyclerView;
 
