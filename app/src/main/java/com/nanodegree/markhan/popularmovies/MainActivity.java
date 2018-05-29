@@ -21,6 +21,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.movie_thumbail_recyclerview)
     RecyclerView movieRecyclerView;
-
+    RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
     ArrayList<Movie> movies;
 
     @Override
@@ -56,16 +58,31 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(rxAdapter)
                 .build();
 
         MovieDbService service = retrofit.create(MovieDbService.class);
 
-        Observable<MovieResponse> call = service.getMovies("popular", API_KEY);
-        call
+        Observable<MovieResponse> call = service.getMovies("popular", API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new Subscriber<MovieResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(MovieResponse movieResponse) {
+
+                    }
+                })
+
     }
 
 

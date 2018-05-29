@@ -9,7 +9,7 @@ import rx.Observable;
 
 public interface MovieDbService {
     @GET("/3/movie/{category}")
-    Observable<MovieResponse> getMovies(
+    Observable<MovieResponse> getMovies (
             @Path("category") String category,
             @Query("api_key") String apiKey);
 }
