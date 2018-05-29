@@ -12,6 +12,7 @@ import com.nanodegree.markhan.popularmovies.models.Movie;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,6 +20,19 @@ import butterknife.ButterKnife;
 
 public class MovieAdapter extends
         RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+
+    private List<Movie> movieList;
+    private LayoutInflater inflater;
+    private Context context;
+    private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342//to0spRl1CMDvyUbOnbb4fTk3VAd.jpg";
+    @BindView(R.id.movie_poster_imageview) ImageView moviePosterIV;
+
+
+    public MovieAdapter(Context context) {
+        this.context = context;
+        this.inflater = LayoutInflater.from(context);
+        this.movieList = new ArrayList<>();
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -35,21 +49,13 @@ public class MovieAdapter extends
         }
     }
 
-    private List<Movie> movieList;
-    private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342//to0spRl1CMDvyUbOnbb4fTk3VAd.jpg";
-    @BindView(R.id.movie_poster_imageview) ImageView moviePosterIV;
-
-
-    public MovieAdapter(List<Movie> movieList) {
-        this.movieList = movieList;
-    }
 
     // Inflate the custom layout from XML and return the holder
     @NonNull
     @Override
     public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
 
         // Inflate custom layout
         View movieView = inflater.inflate(R.layout.movie_poster, parent, false);

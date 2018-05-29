@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fetchMovies();
-//        movieRecyclerView.setAdapter(new MovieAdapter(movies));
-//        movieRecyclerView.setHasFixedSize(true); // may improve performance depending on size of recyclerview
-//        movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        movieRecyclerView.setAdapter(new MovieAdapter(this));
+        movieRecyclerView.setHasFixedSize(true); // may improve performance depending on size of recyclerview
+        movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
     }
 
 // Should I return void or Observable<MovieResponse> here?
