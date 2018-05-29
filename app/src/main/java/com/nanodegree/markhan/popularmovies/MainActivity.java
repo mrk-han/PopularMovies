@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -41,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        createRetrofit();
-        movies = ;
+        fetchMovies();
+//        movies = ;
         // Create adapter passing in the movie data
         MovieAdapter adapter = new MovieAdapter(movies);
 
@@ -53,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
     }
 
-    public void createRetrofit() {
-        // Retrofit setup with Moshi Converter
+
+    public Observable<MovieResponse> fetchMovies() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -62,28 +64,30 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         MovieDbService service = retrofit.create(MovieDbService.class);
-
-        Observable<MovieResponse> call = service.getMovies("popular", API_KEY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<MovieResponse>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(MovieResponse movieResponse) {
-
-                    }
-                })
-
+        service.getMovies("popular", API_KEY);
+        return
     }
+
+    Subscription call = fetchMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Subscriber<MovieResponse>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, e.toString());
+
+                }
+
+                @Override
+                public void onNext(MovieResponse movieResponse) {
+
+                }
+            });
 
 
     @Override
