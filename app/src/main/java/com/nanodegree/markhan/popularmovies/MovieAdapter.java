@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.nanodegree.markhan.popularmovies.models.Movie;
 
 import com.squareup.picasso.Picasso;
@@ -18,6 +19,21 @@ import butterknife.ButterKnife;
 
 public class MovieAdapter extends
         RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+
+        public ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, moviePosterIV);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+        }
+    }
 
     private List<Movie> movieList;
     private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342//to0spRl1CMDvyUbOnbb4fTk3VAd.jpg";
@@ -31,7 +47,7 @@ public class MovieAdapter extends
     // Inflate the custom layout from XML and return the holder
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -53,6 +69,7 @@ public class MovieAdapter extends
                 .load(posterUrl)
                 .placeholder(R.color.colorAccent)
                 .into(moviePosterIV);
+        // TODO need to place the images from picasso into holder.imageview1 and holder.imageview2 which are the 2 image views in the row
     }
 
     // Returns the total count of movieList in the list
@@ -61,17 +78,5 @@ public class MovieAdapter extends
         return movieList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-
-        public ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, moviePosterIV);
-            view.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-        }
-    }
 }

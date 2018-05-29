@@ -1,23 +1,50 @@
 package com.nanodegree.markhan.popularmovies.models;
 
+import com.squareup.moshi.Json;
+
 public class Movie {
 
-    private String id;
+    @Json(name = "vote_count")
+    private int voteCount;
+    @Json(name = "id")
+    private int id;
+    @Json(name = "vote_average")
+    private double voteAverage;
+    @Json(name = "title")
     private String title;
+    @Json(name = "popularity")
+    private double popularity;
+    @Json(name = "poster_path")
+    private String posterPath;
+    @Json(name = "backdrop_path")
+    private String backdropPath;
+    @Json(name = "overview")
     private String overview;
-    private String poster_path;
-    private String description;
-    private String backdrop_path;
-    private String release_date;
-    private double vote_average;
-    private Integer vote_count;
+    @Json(name = "release_date")
+    private String releaseDate;
 
-    public String getId() {
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
     public String getTitle() {
@@ -28,6 +55,30 @@ public class Movie {
         this.title = title;
     }
 
+    public double getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(double popularity) {
+        this.popularity = popularity;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
+
     public String getOverview() {
         return overview;
     }
@@ -36,51 +87,12 @@ public class Movie {
         this.overview = overview;
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getBackdrop_path() {
-        return backdrop_path;
-    }
-
-    public void setBackdrop_path(String backdrop_path) {
-        this.backdrop_path = backdrop_path;
-    }
-
-    public String getRelease_date() {
-        return release_date;
-    }
-
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
-    }
-
-    public double getVote_average() {
-        return vote_average;
-    }
-
-    public void setVote_average(double vote_average) {
-        this.vote_average = vote_average;
-    }
-
-    public Integer getVote_count() {
-        return vote_count;
-    }
-
-    public void setVote_count(Integer vote_count) {
-        this.vote_count = vote_count;
-    }
 }

@@ -1,12 +1,18 @@
 package com.nanodegree.markhan.popularmovies.models;
 
-import java.util.ArrayList;
+import java.util.List;
+import com.squareup.moshi.Json;
 
 public class MovieResponse {
+
+    @Json(name = "page")
     private int page;
+    @Json(name = "total_results")
     private int totalResults;
+    @Json(name = "total_pages")
     private int totalPages;
-    private ArrayList<Movie> results;
+    @Json(name = "results")
+    private List<Movie> movies = null;
 
     public int getPage() {
         return page;
@@ -32,11 +38,12 @@ public class MovieResponse {
         this.totalPages = totalPages;
     }
 
-    public ArrayList<Movie> getResults() {
-        return results;
+    public List<Movie> getResults() {
+        return movies;
     }
 
-    public void setResults(ArrayList<Movie> results) {
-        this.results = results;
+    public void setResults(List<Movie> results) {
+        this.movies = movies;
     }
+
 }
