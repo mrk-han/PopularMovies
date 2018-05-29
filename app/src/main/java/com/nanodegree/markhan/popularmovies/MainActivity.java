@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import com.nanodegree.markhan.popularmovies.models.MovieResponse;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -64,7 +66,12 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
+                        if (e instanceof HttpException)
+                        {
+                            ((HttpException) e).code();
+                            Log.e(TAG, e.toString());
+                        }
                     }
 
                     @Override
