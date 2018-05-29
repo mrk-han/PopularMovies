@@ -24,8 +24,8 @@ public class MovieAdapter extends
     private List<Movie> movieList;
     private LayoutInflater inflater;
     private Context context;
-    private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342//to0spRl1CMDvyUbOnbb4fTk3VAd.jpg";
-    @BindView(R.id.movie_poster_imageview) ImageView moviePosterIV;
+    private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342/";
+
 
 
     public MovieAdapter(Context context) {
@@ -37,7 +37,8 @@ public class MovieAdapter extends
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-
+        @BindView(R.id.movie_poster_imageview)
+        ImageView moviePosterIV;
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, moviePosterIV);
@@ -69,19 +70,24 @@ public class MovieAdapter extends
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // Get the data model based on position
-//        Movie movie = movieList.get(position);
-        String posterUrl = MOVIE_POSTER_PATH;
+        Movie movie = movieList.get(position);
+        String posterUrl = MOVIE_POSTER_PATH + movie.getPosterPath();
         Picasso.get()
                 .load(posterUrl)
                 .placeholder(R.color.colorAccent)
-                .into(moviePosterIV);
-        // TODO need to place the images from picasso into holder.imageview1 and holder.imageview2 which are the 2 image views in the row
+                .into(holder.moviePosterIV);
     }
 
     // Returns the total count of movieList in the list
     @Override
     public int getItemCount() {
         return movieList.size();
+    }
+
+    public void setMovieList(List<Movie> movieList) {
+        this.movieList.clear();
+        this.movieList.addAll(movieList);
+        notifyDataSetChanged();
     }
 
 
