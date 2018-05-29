@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,17 +13,13 @@ import com.nanodegree.markhan.popularmovies.models.Movie;
 import com.nanodegree.markhan.popularmovies.models.MovieResponse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -44,19 +39,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fetchMovies();
-//        movies = ;
-        // Create adapter passing in the movie data
-        MovieAdapter adapter = new MovieAdapter(movies);
-
-
-        // Attach the adapter to the recyclerview to populate items
-        movieRecyclerView.setAdapter(adapter);
-        movieRecyclerView.setHasFixedSize(true); // may improve performance depending on size of recyclerview
-        movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+//        movieRecyclerView.setAdapter(new MovieAdapter(movies));
+//        movieRecyclerView.setHasFixedSize(true); // may improve performance depending on size of recyclerview
+//        movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
     }
 
-
-    public Observable<MovieResponse> fetchMovies() {
+// Should I return void or Observable<MovieResponse> here?
+    public void fetchMovies() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -64,31 +53,28 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         MovieDbService service = retrofit.create(MovieDbService.class);
-        service.getMovies("popular", API_KEY);
-        return
+        Observable<MovieResponse> call = service.getMovies("popular", API_KEY);
+        call.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<MovieResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        // Nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(MovieResponse movieResponse) {
+                        // Called once the MovieResponse Object is available
+                    }
+                });
+
+        //NOT SURE WHAT TO RETURN HERE;
     }
-
-    Subscription call = fetchMovies()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<MovieResponse>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.e(TAG, e.toString());
-
-                }
-
-                @Override
-                public void onNext(MovieResponse movieResponse) {
-
-                }
-            });
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
