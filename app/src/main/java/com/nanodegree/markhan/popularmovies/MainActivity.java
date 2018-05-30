@@ -14,8 +14,10 @@ import com.nanodegree.markhan.popularmovies.models.Movie;
 import com.nanodegree.markhan.popularmovies.models.MovieResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -40,10 +42,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fetchMovies();
+        ButterKnife.bind(this);
         movieRecyclerView.setAdapter(new MovieAdapter(this));
         movieRecyclerView.setHasFixedSize(true); // may improve performance depending on size of recyclerview
         movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        fetchMovies();
     }
 
 // Should I return void or Observable<MovieResponse> here?
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         MovieDbService service = retrofit.create(MovieDbService.class);
-        Observable<MovieResponse> call = service.getMovies("popular", API_KEY);
+        final Observable<MovieResponse> call = service.getMovies("popular", API_KEY);
         call.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<MovieResponse>() {
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onNext(MovieResponse movieResponse) {
                         // Called once the MovieResponse Object is available
+                        List<Movie> results = movieResponse.getMovies();
+                        movies.add((Movie) results);
                     }
                 });
 
