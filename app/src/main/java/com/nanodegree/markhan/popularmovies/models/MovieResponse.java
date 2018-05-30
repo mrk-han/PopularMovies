@@ -18,32 +18,15 @@ public class MovieResponse {
         return page;
     }
 
-    public void setPage(int page) {
-        this.page = page;
-    }
-
     public int getTotalResults() {
         return totalResults;
-    }
-
-    public void setTotalResults(int totalResults) {
-        this.totalResults = totalResults;
     }
 
     public int getTotalPages() {
         return totalPages;
     }
 
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public List<Movie> getResults() {
+    public List<Movie> getMovies() {
         return movies;
     }
-
-    public void setResults(List<Movie> results) {
-        this.movies = movies;
-    }
-
 }
