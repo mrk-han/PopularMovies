@@ -3,6 +3,7 @@ package com.nanodegree.markhan.popularmovies.models;
 import com.squareup.moshi.Json;
 
 public class Movie {
+    public static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342/";
 
     @Json(name = "vote_count")
     private int voteCount;
@@ -22,6 +23,8 @@ public class Movie {
     private String overview;
     @Json(name = "release_date")
     private String releaseDate;
+
+    public Movie(){}
 
     public int getVoteCount() {
         return voteCount;

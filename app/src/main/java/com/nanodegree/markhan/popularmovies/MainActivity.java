@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.nanodegree.markhan.popularmovies.api.MovieDbService;
+import com.nanodegree.markhan.popularmovies.api.RetrofitClient;
 import com.nanodegree.markhan.popularmovies.models.Movie;
 import com.nanodegree.markhan.popularmovies.models.MovieResponse;
 
@@ -21,7 +22,6 @@ import butterknife.ButterKnife;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,46 +32,51 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String BASE_URL = "http://api.themoviedb.org/";
     private final static String API_KEY = BuildConfig.API_KEY;
+    List<Movie> testMovies = null;
 
-    @BindView(R.id.movie_thumbail_recyclerview)
+    @BindView(R.id.movie_thumbnail_recyclerview)
     RecyclerView movieRecyclerView;
     RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
-    ArrayList<Movie> movies;
+    MovieAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        movieRecyclerView.setAdapter(new MovieAdapter(this));
-        movieRecyclerView.setHasFixedSize(true); // may improve performance depending on size of recyclerview
+
+        adapter = new MovieAdapter(this, testMovies);
+        movieRecyclerView.setHasFixedSize(true);
         movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        fetchMovies();
+        movieRecyclerView.setAdapter(adapter);
+        List<Movie> movies = new ArrayList<>();
+        movies.add(new Movie());
+        adapter.setMovieList(movies);
+
+
     }
 
-// Should I return void or Observable<MovieResponse> here?
-    public void fetchMovies() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(rxAdapter)
-                .build();
+    // Should I return void or Observable<MovieResponse> here?
+    public MovieResponse fetchMovies(String category, String API_KEY) {
+        // get singleton instance of Retrofit
+        Retrofit retrofit = RetrofitClient.getClient(BASE_URL, rxAdapter);
 
-        MovieDbService service = retrofit.create(MovieDbService.class);
-        final Observable<MovieResponse> call = service.getMovies("popular", API_KEY);
+        final MovieDbService service = retrofit.create(MovieDbService.class);
+
+
+        Observable<MovieResponse> call = service.getMovies(category, API_KEY);
+
         call.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<MovieResponse>() {
                     @Override
                     public void onCompleted() {
-                        // Nothing to do here
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        if (e instanceof HttpException)
-                        {
+                        if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             Log.e(TAG, e.toString());
                         }
@@ -79,13 +84,15 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(MovieResponse movieResponse) {
-                        // Called once the MovieResponse Object is available
-                        List<Movie> results = movieResponse.getMovies();
-                        movies.add((Movie) results);
+                        System.out.println("onNext: " + movieResponse);
+                        movieResponse.getMovies().toArray();
+                        Log.d(TAG, String.valueOf(movieResponse));
+                        List<Movie> testMovies = movieResponse.getMovies();
+                        movieRecyclerView.setAdapter(new MovieAdapter(MainActivity.this, testMovies));
+                        Log.d(TAG, "Number of movies: " + testMovies.size());
                     }
                 });
-
-        //NOT SURE WHAT TO RETURN HERE;
+        return null;
     }
 
     @Override
@@ -100,13 +107,12 @@ public class MainActivity extends AppCompatActivity {
         int menuItemSelected = item.getItemId();
 
         if (menuItemSelected == R.id.item_popular_movies) {
-            // Get the popular movies using rxjava/retrofit/moshi
+            fetchMovies(this.getResources().getString(R.string.title_popular), API_KEY);
         } else if (menuItemSelected == R.id.item_top_rated_movies) {
-            // Get the top rated movies using rxjava/retrofit/moshi
+            fetchMovies(this.getResources().getString(R.string.title_top_rated), API_KEY);
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }
