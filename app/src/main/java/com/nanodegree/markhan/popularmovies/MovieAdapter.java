@@ -25,10 +25,12 @@ public class MovieAdapter extends
         RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
+    private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
+
     private List<Movie> movies;
-    private LayoutInflater inflater;
     private Context context;
-    private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342/";
+
+
 
 
     public MovieAdapter(List<Movie> movies, Context context) {
@@ -57,7 +59,7 @@ public class MovieAdapter extends
     @Override
     public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
 
 
         // Inflate custom layout
@@ -73,13 +75,12 @@ public class MovieAdapter extends
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         String debugURL = "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
-//        String posterPath = movies.get(position).getPosterPath();
-//        String posterUrl = MOVIE_POSTER_PATH + posterPath;
-//
-//        Log.d(TAG, posterUrl + movies.get(position).getPosterPath());
+//        Movie movie = movies.get(position);
+//        String posterUrl = POSTER_BASE_URL + movie.getPosterPath();
+
         Picasso.get()
                 .load(debugURL)
-//                .resize(450, 450)
+                .resize(450, 450)
                 .placeholder(R.color.colorAccent)
                 .into(holder.moviePosterIV);
     }

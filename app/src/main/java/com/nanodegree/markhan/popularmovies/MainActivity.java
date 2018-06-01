@@ -29,13 +29,18 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    // ButterKnife
+    @BindView(R.id.movie_thumbnail_recyclerview) RecyclerView movieRecyclerView;
+
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String BASE_URL = "http://api.themoviedb.org/";
-    private final static String API_KEY = BuildConfig.API_KEY;
-    List<Movie> testMovies;
+    private static final String API_KEY = BuildConfig.API_KEY;
+    private static final String TOP_RATED = "top_rated";
+    private static final String POPULAR = "popular";
+    List<Movie> movieList;
 
-    @BindView(R.id.movie_thumbnail_recyclerview)
-    RecyclerView movieRecyclerView;
+
+
     RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
     MovieAdapter adapter;
 
@@ -45,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        adapter = new MovieAdapter(testMovies, this);
         movieRecyclerView.setHasFixedSize(true);
+        adapter = new MovieAdapter(movieList, this);
         movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         movieRecyclerView.setAdapter(adapter);
     }
@@ -97,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
         int menuItemSelected = item.getItemId();
 
         if (menuItemSelected == R.id.item_popular_movies) {
-            fetchMovies(this.getResources().getString(R.string.get_popular), API_KEY);
+            fetchMovies(POPULAR, API_KEY);
         } else if (menuItemSelected == R.id.item_top_rated_movies) {
-            fetchMovies(this.getResources().getString(R.string.get_top_rated), API_KEY);
+            fetchMovies(TOP_RATED, API_KEY);
         }
         return super.onOptionsItemSelected(item);
     }
