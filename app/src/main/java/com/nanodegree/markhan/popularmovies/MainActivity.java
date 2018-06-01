@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String BASE_URL = "http://api.themoviedb.org/";
     private final static String API_KEY = BuildConfig.API_KEY;
-    List<Movie> testMovies = null;
+    List<Movie> testMovies;
 
     @BindView(R.id.movie_thumbnail_recyclerview)
     RecyclerView movieRecyclerView;
@@ -45,15 +45,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        adapter = new MovieAdapter(this, testMovies);
+        adapter = new MovieAdapter(testMovies, this);
         movieRecyclerView.setHasFixedSize(true);
         movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         movieRecyclerView.setAdapter(adapter);
-        List<Movie> movies = new ArrayList<>();
-        movies.add(new Movie());
-        adapter.setMovieList(movies);
-
-
     }
 
     // Should I return void or Observable<MovieResponse> here?
@@ -61,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // get singleton instance of Retrofit
         Retrofit retrofit = RetrofitClient.getClient(BASE_URL, rxAdapter);
 
-        final MovieDbService service = retrofit.create(MovieDbService.class);
+        MovieDbService service = retrofit.create(MovieDbService.class);
 
 
         Observable<MovieResponse> call = service.getMovies(category, API_KEY);
@@ -76,20 +71,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        if (e instanceof HttpException) {
-                            ((HttpException) e).code();
-                            Log.e(TAG, e.toString());
-                        }
+                        Log.e(TAG, e.toString());
+
                     }
 
                     @Override
                     public void onNext(MovieResponse movieResponse) {
-                        System.out.println("onNext: " + movieResponse);
-                        movieResponse.getMovies().toArray();
-                        Log.d(TAG, String.valueOf(movieResponse));
                         List<Movie> testMovies = movieResponse.getMovies();
-                        movieRecyclerView.setAdapter(new MovieAdapter(MainActivity.this, testMovies));
-                        Log.d(TAG, "Number of movies: " + testMovies.size());
+//                        movieRecyclerView.setAdapter(new MovieAdapter(MainActivity.this, testMovies));
+//                        Log.d(TAG, "Number of movies: " + testMovies.size());
                     }
                 });
         return null;
@@ -107,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
         int menuItemSelected = item.getItemId();
 
         if (menuItemSelected == R.id.item_popular_movies) {
-            fetchMovies(this.getResources().getString(R.string.title_popular), API_KEY);
+            fetchMovies(this.getResources().getString(R.string.get_popular), API_KEY);
         } else if (menuItemSelected == R.id.item_top_rated_movies) {
-            fetchMovies(this.getResources().getString(R.string.title_top_rated), API_KEY);
+            fetchMovies(this.getResources().getString(R.string.get_top_rated), API_KEY);
         }
         return super.onOptionsItemSelected(item);
     }

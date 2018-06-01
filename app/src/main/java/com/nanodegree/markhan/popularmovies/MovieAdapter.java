@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,16 +25,15 @@ public class MovieAdapter extends
         RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
-    private List<Movie> movieList;
+    private List<Movie> movies;
     private LayoutInflater inflater;
     private Context context;
     private static final String MOVIE_POSTER_PATH = "http://image.tmdb.org/t/p/w342/";
 
 
-
-    public MovieAdapter(Context context, List<Movie> movieList) {
+    public MovieAdapter(List<Movie> movies, Context context) {
+        this.movies = movies;
         this.context = context;
-        this.movieList = new ArrayList<>();
     }
 
 
@@ -59,6 +59,7 @@ public class MovieAdapter extends
         Context context = viewGroup.getContext();
         inflater = LayoutInflater.from(context);
 
+
         // Inflate custom layout
         View movieView = inflater.inflate(R.layout.movie_poster, viewGroup, false);
 
@@ -70,14 +71,15 @@ public class MovieAdapter extends
     // displays our image at the specified position in the list
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Get the data model based on position
-        Movie movie = movieList.get(position);
-        String posterUrl = (MOVIE_POSTER_PATH + movie.getPosterPath());
-        Log.d(TAG, MOVIE_POSTER_PATH + movie.getPosterPath());
-        Log.d(TAG, "testing this hits");
+
+        String debugURL = "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
+//        String posterPath = movies.get(position).getPosterPath();
+//        String posterUrl = MOVIE_POSTER_PATH + posterPath;
+//
+//        Log.d(TAG, posterUrl + movies.get(position).getPosterPath());
         Picasso.get()
-                .load(posterUrl)
-                .resize(100, 100)
+                .load(debugURL)
+//                .resize(450, 450)
                 .placeholder(R.color.colorAccent)
                 .into(holder.moviePosterIV);
     }
@@ -85,14 +87,12 @@ public class MovieAdapter extends
     // gets the number of items in the adapter
     @Override
     public int getItemCount() {
-        return movieList.size();
+        if (movies != null) {
+            return movies.size();
+        }
+        return 0;
     }
 
-    public void setMovieList(List<Movie> movieList) {
-        this.movieList.clear();
-        this.movieList.addAll(movieList);
-        notifyDataSetChanged();
-    }
 
 
 }
