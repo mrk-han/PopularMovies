@@ -49,15 +49,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        fetchMovies("popular", API_KEY);
         movieRecyclerView.setHasFixedSize(true);
         adapter = new MovieAdapter(movieList, this);
         movieRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         movieRecyclerView.setAdapter(adapter);
+
     }
 
     // Should I return void or Observable<MovieResponse> here?
-    public MovieResponse fetchMovies(String category, String API_KEY) {
+    public void fetchMovies(String category, String API_KEY) {
         // get singleton instance of Retrofit
         Retrofit retrofit = RetrofitClient.getClient(BASE_URL, rxAdapter);
 
@@ -76,18 +77,17 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Log.e(TAG, e.toString());
+                        Log.e(TAG, "Something f'd", e);
 
                     }
 
                     @Override
                     public void onNext(MovieResponse movieResponse) {
                         List<Movie> testMovies = movieResponse.getMovies();
-//                        movieRecyclerView.setAdapter(new MovieAdapter(MainActivity.this, testMovies));
-//                        Log.d(TAG, "Number of movies: " + testMovies.size());
+                        movieRecyclerView.setAdapter(new MovieAdapter(testMovies, MainActivity.this));
+                        Log.d(TAG, "Number of movies: " + testMovies.size());
                     }
                 });
-        return null;
     }
 
     @Override

@@ -10,8 +10,8 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface MovieDbService {
-    @GET("/3/movie/{category}?api_key=key")
+    @GET("/3/movie/{category}")
     Observable<MovieResponse> getMovies (
             @Path("category") String category,
-            @Query("key") String key);
+            @Query("api_key") String key);
 }

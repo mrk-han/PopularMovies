@@ -25,7 +25,7 @@ public class MovieAdapter extends
         RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
-    private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
+    private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w780/";
 
     private List<Movie> movies;
     private Context context;
@@ -74,13 +74,13 @@ public class MovieAdapter extends
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String debugURL = "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
-//        Movie movie = movies.get(position);
-//        String posterUrl = POSTER_BASE_URL + movie.getPosterPath();
+//        String debugURL = "http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
+        Movie movie = movies.get(position);
+        String posterUrl = POSTER_BASE_URL + movie.getPosterPath();
+
 
         Picasso.get()
-                .load(debugURL)
-                .resize(450, 450)
+                .load(posterUrl)
                 .placeholder(R.color.colorAccent)
                 .into(holder.moviePosterIV);
     }
